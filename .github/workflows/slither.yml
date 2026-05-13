@@ -1,0 +1,20 @@
+name: Slither Smart Contract Security Scan
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Slither Analyzer
+        uses: crytic/slither-action@v0.4.0
+        with:
+          target: 'BadVault.sol'
+          slither-args: '--exclude-informational --exclude-low'
+          fail-on: 'high'
