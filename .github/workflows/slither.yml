@@ -1,0 +1,23 @@
+name: Slither Smart Contract Security Scan
+
+# 3. Kích hoạt workflow khi có thao tác push vào nhánh main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Slither Analyzer
+        uses: crytic/slither-action@v0.4.0
+        with:
+          target: 'BadVault.sol'
+          # Cấu hình bỏ qua các cảnh báo rác của trình biên dịch (tùy chọn)
+          slither-args: '--exclude-informational --exclude-low'
+          # 4. Cấu hình CHỈ đánh rớt (fail) workflow nếu có lỗi High Severity
+          fail-on: 'high'
